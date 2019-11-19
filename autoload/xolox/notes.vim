@@ -598,6 +598,9 @@ function! xolox#notes#find_directories(include_shadow_directory) " {{{2
 endfunction
 
 function! xolox#notes#set_filetype() " {{{2
+  if &filetype != 'markdown' | setlocal filetype=markdown | endif
+  return
+
   " Load the notes file type if not already loaded.
   if &filetype != 'notes'
     " Change the file type.
