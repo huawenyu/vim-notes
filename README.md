@@ -20,10 +20,6 @@ The vim-notes plug-in for the [Vim text editor] [vim] makes it easy to manage yo
  * **Writing aids:** The included file type plug-in contains mappings for automatic curly quotes, arrows and list bullets and supports completion of note titles using Control-X Control-U and completion of tags using Control-X Control-O
  * **Embedded file types:** The included syntax script supports embedded highlighting using blocks marked with `{{{type … }}}` (triple back ticks ala [GFM] [gfm] are also supported) which allows you to embed highlighted code and configuration snippets in your notes
 
-Here's a screen shot of the syntax mode (using the [Slate] [slate] color scheme and the [Monaco] [monaco] font):
-
-![Syntax mode screen shot](http://peterodding.com/code/vim/notes/syntax.png)
-
 ## Install & usage
 
 Please refer to [the installation instructions] [install-notes] available on GitHub. Once you've installed the plug-in you can get started by executing `:Note` or `:edit note:`, this will start a new note that contains instructions on how to continue from there (and how to use the plug-in in general).
@@ -251,38 +247,6 @@ The completion menu is populated from a text file listing all your tags, one on 
 
 If for any reason you want to recreate the list of tags you can execute the `:IndexTaggedNotes` command.
 
-### The `:NoteToHtml` command
-
-This command converts the current note to HTML. It works by first converting the current note to [Markdown] [markdown] and then using the `markdown` program to convert that to HTML. It requires an external program to convert Markdown to HTML. By default the program `markdown` is used, but you can change the name of the program using the `g:notes_markdown_program` option. To convert your note to HTML and open the generated web page in a browser, you can run:
-
-    :NoteToHtml
-
-Alternatively, to convert your note to HTML and display it in a new split window in Vim, you can run:
-
-    :NoteToHtml split
-
-Note that this command can be a bit slow, because the parser for the note taking syntax is written in Vim script (for portability) and has not been optimized for speed (yet).
-
-### The `:NoteToMarkdown` command
-
-Convert the current note to a [Markdown document] [markdown]. The vim-notes syntax shares a lot of similarities with the Markdown text format, but there are some notable differences, which this command takes care of:
-
- * The first line of a note is an implicit document title. In Markdown format it has to be marked with `#`. This also implies that the remaining headings should be shifted by one level.
-
- * Preformatted blocks are marked very differently in notes and Markdown (`{{{` and `}}}` markers versus 4 space indentation).
-
- * The markers and indentation of list items differ between notes and Markdown (dumb bullets vs Unicode bullets and 3 vs 4 spaces).
-
-Note that this command can be a bit slow, because the parser for the note taking syntax is written in Vim script (for portability) and has not been optimized for speed (yet).
-
-### The `:NoteToMediawiki` command
-
-Convert the current note to a [Mediawiki document] [mediawiki]. This is similar to the `:NoteToMarkdown` command, but it produces wiki text that can be displayed on a Mediawiki site. That being said, the subset of wiki markup that vim-notes actually produces will probably work on other wiki sites. These are the notable transforations:
-
- * The first line of the note is a title, but it isn't used in the Mediawiki syntax. It could have been put into a `= Title =` tag, but it doesn't really make sense in the context of a wiki. It would make the table of contents nest under the title for every document you create.
-
- * Preformatted blocks are output into `<syntaxhighlight lang="..">` tags. This functionality is enabled on Mediawiki through the [SyntaxHighlight GeSHi extention] [geshi]. It is also supported on Wikipedia.
-
 ## Mappings
 
 The following key mappings are defined inside notes.
@@ -304,81 +268,6 @@ The following key mappings are defined inside notes.
  * `\sn` executes `:SplitNoteFromSelectedText`
  * `\tn` executes `:TabNoteFromSelectedText`
 
-## Customizing the syntax highlighting of notes
-
-The syntax mode for notes is written so you can override styles you don't like. To do so you can add lines such as the following to your [vimrc script] [vimrc]:
-
-    " Don't highlight single quoted strings.
-    highlight link notesSingleQuoted Normal
-
-    " Show double quoted strings in italic font.
-    highlight notesDoubleQuoted gui=italic
-
-See the documentation of the [:highlight] [highlight] command for more information. Below are the names of the syntax items defined by the notes syntax mode:
-
- * `notesName` - the names of other notes, usually highlighted as a hyperlink
- * `notesTagName` - words preceded by an `@` character, also highlighted as a hyperlink
- * `notesListBullet` - the bullet characters used for list items
- * `notesListNumber` - numbers in front of list items
- * `notesDoubleQuoted` - double quoted strings
- * `notesSingleQuoted` - single quoted strings
- * `notesItalic` - strings between two `_` characters
- * `notesBold` - strings between two `*` characters
- * `notesTextURL` - plain domain name (recognized by leading `www.`)
- * `notesRealURL` - URLs (e.g. <http://vim.org/>)
- * `notesEmailAddr` - e-mail addresses
- * `notesUnixPath` - UNIX file paths (e.g. `~/.vimrc` and `/home/peter/.vimrc`)
- * `notesPathLnum` - line number following a UNIX path
- * `notesWindowsPath` - Windows file paths (e.g. `c:\users\peter\_vimrc`)
- * `notesTodo` - `TODO` markers
- * `notesXXX` - `XXX` markers
- * `notesFixMe` - `FIXME` markers
- * `notesInProgress` - `CURRENT`, `INPROGRESS`, `STARTED` and `WIP` markers
- * `notesDoneItem` - lines containing the marker `DONE`, usually highlighted as a comment
- * `notesDoneMarker` - `DONE` markers
- * `notesVimCmd` - Vim commands, words preceded by an `:` character
- * `notesTitle` - the first line of each note
- * `notesShortHeading` - short sentences ending in a `:` character
- * `notesAtxHeading` - lines preceded by one or more `#` characters
- * `notesBlockQuote` - lines preceded by a `>` character
- * `notesRule` - lines containing only whitespace and `* * *`
- * `notesCodeStart` - the `{{{` markers that begin a block of code (including the syntax name)
- * `notesCodeEnd` - the `}}}` markers that end a block of code
- * `notesModeLine` - Vim [modeline] [modeline] in last line of notes
- * `notesLastEdited` - last edited dates in `:ShowTaggedNotes` buffers
-
-## Other plug-ins that work well with the notes plug-in
-
-### utl.vim
-
-The [utl.vim] [utl] universal text linking plug-in enables links between your notes, other local files and remote resources like web pages.
-
-### vim-shell
-
-My [vim-shell] [shell] plug-in also enables easy navigation between your notes and environment like local files and directories, web pages and e-mail addresses by providing key mappings and commands to e.g. open the file/URL under the text cursor. This plug-in can also change Vim to full screen which can be really nice for large notes.
-
-### VOoM
-
-The [VOoM] [voom] outlining plug-in should work well for notes if you use the Markdown style headers starting with `#`, however it has been reported that this combination may not always work so well in practice (sometimes losing notes!)
-
-### Txtfmt
-
-If the text formatting supported by the notes plug-in is not enough for you, consider trying the [Txtfmt] [txtfmt] (The Vim Highlighter) plug-in. To use the two plug-ins together, create the file `after/ftplugin/notes.vim` inside your Vim profile with the following contents:
-
-    " Enable Txtfmt formatting inside notes.
-    setlocal filetype=notes.txtfmt
-
-## Using the notes file type for git commit messages
-
-If you write your git commit messages in Vim and want to use the notes file type (syntax highlighting and editing mode) to edit your git commit messages you can add the following line to your [vimrc script] [vimrc]:
-
-    autocmd BufNewFile,BufRead */.git/COMMIT_EDITMSG setlocal filetype=notes
-
-This is not a complete solution (there are more types of commit messages that the pattern above won't match) but that is outside the scope of this document. For inspiration you can take a look at the [runtime/filetype.vim] [filetype.vim] file in Vim's Mercurial repository.
-
-## Contact
-
-If you have questions, bug reports, suggestions, etc. the author can be contacted at <peter@peterodding.com>. The latest version is available at <http://peterodding.com/code/vim/notes/> and <http://github.com/xolox/vim-notes>. If you like the script please vote for it on [Vim Online] [vim_online].
 
 ## License
 
