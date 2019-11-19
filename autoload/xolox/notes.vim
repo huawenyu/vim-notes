@@ -601,7 +601,7 @@ function! xolox#notes#set_filetype() " {{{2
   " Load the notes file type if not already loaded.
   if &filetype != 'notes'
     " Change the file type.
-    setlocal filetype=notes
+    setlocal filetype=markdown
   elseif synID(1, 1, 0) == 0
     " Load the syntax. When you execute :RecentNotes, switch to a different
     " buffer and then return to the buffer created by :RecentNotes, it will

@@ -36,9 +36,6 @@ command! -bar -bang -nargs=? RecentNotes call xolox#notes#recent#show(<q-bang>, 
 command! -bar -bang MostRecentNote call xolox#notes#recent#edit(<q-bang>)
 command! -bar -count=1 ShowTaggedNotes call xolox#notes#tags#show_tags(<count>)
 command! -bar IndexTaggedNotes call xolox#notes#tags#create_index()
-command! -bar NoteToMarkdown call xolox#notes#markdown#view()
-command! -bar NoteToMediawiki call xolox#notes#mediawiki#view()
-command! -bar -nargs=? NoteToHtml call xolox#notes#html#view(<q-args>)
 
 " TODO Generalize this so we have one command + modifiers (like :tab)?
 command! -bar -bang -range NoteFromSelectedText call xolox#notes#from_selection(<q-bang>, 'edit')
@@ -63,15 +60,6 @@ augroup PluginNotes
     exe 'au BufWriteCmd' xolox#notes#autocmd_pattern(s:directory, 1) 'call xolox#notes#save()'
   endfor
   unlet s:directory
-augroup END
-
-augroup filetypedetect
-  let s:template = 'au BufNewFile,BufRead %s if &bt == "" | setl ft=notes | end'
-  for s:directory in xolox#notes#find_directories(0)
-    execute printf(s:template, xolox#notes#autocmd_pattern(s:directory, 1))
-  endfor
-  unlet s:directory
-  execute printf(s:template, xolox#notes#autocmd_pattern(g:notes_shadowdir, 0))
 augroup END
 
 " Make sure the plug-in is only loaded once.
