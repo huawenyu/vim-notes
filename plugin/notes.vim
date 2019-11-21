@@ -48,18 +48,19 @@ augroup PluginNotes
   autocmd!
   au SwapExists * call xolox#notes#swaphack()
   au BufUnload * call xolox#notes#unload_from_cache()
-  au BufReadPost,BufWritePost * call xolox#notes#refresh_syntax()
-  au InsertEnter,InsertLeave * call xolox#notes#refresh_syntax()
-  au CursorHold,CursorHoldI * call xolox#notes#refresh_syntax()
+  "au BufReadPost,BufWritePost * call xolox#notes#refresh_syntax()
+  "au InsertEnter,InsertLeave * call xolox#notes#refresh_syntax()
+  "au CursorHold,CursorHoldI * call xolox#notes#refresh_syntax()
   " NB: "nested" is used here so that SwapExists automatic commands apply
   " to notes (which is IMHO better than always showing the E325 prompt).
   au BufReadCmd note:* nested call xolox#notes#shortcut()
   " Automatic commands to read/write notes (used for automatic renaming).
   exe 'au BufReadCmd' xolox#notes#autocmd_pattern(g:notes_shadowdir, 0) 'call xolox#notes#edit_shadow()'
-  for s:directory in xolox#notes#find_directories(0)
-    exe 'au BufWriteCmd' xolox#notes#autocmd_pattern(s:directory, 1) 'call xolox#notes#save()'
-  endfor
-  unlet s:directory
+
+  "for s:directory in xolox#notes#find_directories(0)
+  "  exe 'au BufWriteCmd' xolox#notes#autocmd_pattern(s:directory, 1) 'call xolox#notes#save()'
+  "endfor
+  "unlet s:directory
 augroup END
 
 " Make sure the plug-in is only loaded once.

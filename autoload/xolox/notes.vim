@@ -403,6 +403,8 @@ function! xolox#notes#auto_complete_tags() " {{{1
 endfunction
 
 function! xolox#notes#save() abort " {{{1
+  return
+
   " When the current note's title is changed, automatically rename the file.
   if xolox#notes#filetype_is_note(&ft)
     let title = xolox#notes#current_title()
