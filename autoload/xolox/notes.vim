@@ -165,15 +165,14 @@ function! xolox#notes#edit(bang, title) abort " {{{1
   endif
   " At this point we're dealing with a new note.
   let fname = xolox#notes#title_to_fname(title)
-  "noautocmd execute 'edit' . a:bang fnameescape(fname)
-  execute 'edit' . a:bang fnameescape(fname)
+  noautocmd execute 'edit' . a:bang fnameescape(fname)
   if line('$') == 1 && getline(1) == ''
     execute 'silent read' fnameescape(g:notes_new_note_template)
     1delete
     if !xolox#notes#unicode_enabled()
       call s:transcode_utf8_latin1()
     endif
-    "setlocal nomodified
+    setlocal nomodified
   endif
   if title != 'New note'
     call setline(1, title)
